@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1RM 계산기</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💪</text></svg>"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>1RM 계산기</h1>
+        <button id="theme-toggle" aria-label="다크모드 토글">🌙</button>
+      </header>
+
+      <main>
+        <section id="exercise-section">
+          <h2>운동 선택</h2>
+          <div class="exercise-list">
+            <button class="exercise-card" data-exercise="bench_press">
+              <img src="images/bench.png" alt="벤치프레스" />
+              <span>벤치프레스</span>
+            </button>
+            <button class="exercise-card" data-exercise="squat">
+              <img src="images/squat.png" alt="스쿼트" />
+              <span>스쿼트</span>
+            </button>
+            <button class="exercise-card" data-exercise="deadlift">
+              <img src="images/dead.png" alt="데드리프트" />
+              <span>데드리프트</span>
+            </button>
+          </div>
+        </section>
+        <section id="input-section">
+          <h2>무게/횟수 입력</h2>
+          <form id="input-form" autocomplete="off">
+            <div class="input-group">
+              <label for="weight">무게(kg)</label>
+              <input type="text" id="weight" name="weight" required />
+            </div>
+            <div class="input-group">
+              <label for="reps">횟수</label>
+              <select id="reps" name="reps" required>
+                <option value="">선택</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+              </select>
+            </div>
+            <button type="submit">입력 완료</button>
+          </form>
+          <div
+            id="error-message"
+            class="error-message"
+            aria-live="polite"
+          ></div>
+        </section>
+        <section
+          id="result-section"
+          class="result-section"
+          style="display: none"
+        >
+          <h2>예상 1RM 결과</h2>
+          <div class="result-content">
+            <div class="result-exercise"></div>
+            <div class="result-inputs"></div>
+            <div class="result-1rm"></div>
+            <button id="share-btn" class="share-btn" type="button">
+              공유하기
+            </button>
+            <div
+              id="share-message"
+              class="share-message"
+              aria-live="polite"
+            ></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
