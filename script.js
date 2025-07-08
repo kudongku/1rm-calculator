@@ -396,6 +396,32 @@ document.addEventListener("DOMContentLoaded", () => {
     resultSection.style.display = "block";
     setTimeout(() => {
       resultSection.classList.add("show");
+      // 카드 양옆에서 confetti(폭죽) 애니메이션 실행
+      if (window.confetti && resultCard) {
+        const rect = resultCard.getBoundingClientRect();
+        // 왼쪽 폭죽
+        confetti({
+          particleCount: 36,
+          angle: 60,
+          spread: 55,
+          origin: {
+            x: (rect.left + 10) / window.innerWidth,
+            y: (rect.top + rect.height / 2) / window.innerHeight,
+          },
+          colors: ["#2563eb", "#fbbf24", "#22c55e", "#ef4444", "#a21caf"],
+        });
+        // 오른쪽 폭죽
+        confetti({
+          particleCount: 36,
+          angle: 120,
+          spread: 55,
+          origin: {
+            x: (rect.right - 10) / window.innerWidth,
+            y: (rect.top + rect.height / 2) / window.innerHeight,
+          },
+          colors: ["#2563eb", "#fbbf24", "#22c55e", "#ef4444", "#a21caf"],
+        });
+      }
     }, 10);
   }
   function hideResult() {
