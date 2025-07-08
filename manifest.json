@@ -1,0 +1,22 @@
+{
+  "name": "1RM 계산기",
+  "short_name": "1RM",
+  "description": "운동별 1RM(최대 1회 반복 중량) 계산기",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#1a1a1a",
+  "theme_color": "#3b82f6",
+  "icons": [
+    {
+      "src": "images/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "images/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "lang": "ko"
+}
