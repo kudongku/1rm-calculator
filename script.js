@@ -59,6 +59,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const result1rm = document.querySelector(".result-1rm");
   const shareBtn = document.getElementById("share-btn");
   const shareMessage = document.getElementById("share-message");
+  const resultCardImage = document.querySelector(".result-card-image");
+  const downloadBtn = document.getElementById("download-btn");
+  const resultCard = document.querySelector(".result-card");
 
   inputForm.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -90,11 +93,21 @@ document.addEventListener("DOMContentLoaded", () => {
       squat: t.squat,
       deadlift: t.deadlift,
     };
-    resultExercise.textContent = `${t.resultExercise}: ${
+    resultExercise.textContent = `${
       exerciseNameMap[selectedExercise] || selectedExercise
     }`;
-    resultInputs.textContent = `${t.resultWeight}: ${weight}kg, ${t.resultReps}: ${reps}`;
+    resultInputs.textContent = `${weight}kg, ${t.resultReps}: ${reps}`;
     result1rm.textContent = `${t.result1rm}: ${oneRM}kg`;
+    // 이미지 동적 변경
+    const exerciseImageMap = {
+      bench_press: { src: "images/bench.png", alt: t.bench },
+      squat: { src: "images/squat.png", alt: t.squat },
+      deadlift: { src: "images/dead.png", alt: t.deadlift },
+    };
+    if (resultCardImage && exerciseImageMap[selectedExercise]) {
+      resultCardImage.src = exerciseImageMap[selectedExercise].src;
+      resultCardImage.alt = exerciseImageMap[selectedExercise].alt;
+    }
     showResult();
   });
 
@@ -104,6 +117,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 공유 버튼 클릭 이벤트
   shareBtn.addEventListener("click", async () => {
+    if (!resultCard) return;
+    try {
+      // html2canvas로 카드 캡처
+      const canvas = await html2canvas(resultCard, {
+        backgroundColor: null,
+        scale: 2,
+      });
+      const dataUrl = canvas.toDataURL("image/png");
+      // Web Share API로 이미지 공유 시도
+      if (
+        navigator.canShare &&
+        navigator.canShare({
+          files: [
+            new File([dataURLtoBlob(dataUrl)], "1rm-result.png", {
+              type: "image/png",
+            }),
+          ],
+        })
+      ) {
+        const file = new File([dataURLtoBlob(dataUrl)], "1rm-result.png", {
+          type: "image/png",
+        });
+        await navigator.share({
+          files: [file],
+          title: "1RM 계산 결과",
+          text: "나의 1RM 계산 결과를 확인하세요!",
+        });
+        showShareMessage("이미지 공유가 완료되었습니다.");
+        return;
+      }
+    } catch (e) {
+      // 이미지 공유 실패 시 fallback
+    }
+    // 기존 링크 공유 fallback
     const params = new URLSearchParams({
       exercise: selectedExercise,
       weight: weightInput.value.trim(),
@@ -128,6 +175,39 @@ document.addEventListener("DOMContentLoaded", () => {
       showShareMessage("공유에 실패했습니다. 다시 시도해주세요.", true);
     }
   });
+
+  // 다운로드 버튼 클릭 이벤트
+  downloadBtn.addEventListener("click", async () => {
+    if (!resultCard) return;
+    try {
+      const canvas = await html2canvas(resultCard, {
+        backgroundColor: null,
+        scale: 2,
+      });
+      const dataUrl = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.href = dataUrl;
+      link.download = "1rm-result.png";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (e) {
+      showShareMessage("이미지 저장에 실패했습니다.", true);
+    }
+  });
+
+  // DataURL -> Blob 변환 함수
+  function dataURLtoBlob(dataurl) {
+    const arr = dataurl.split(",");
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], { type: mime });
+  }
 
   // 다국어 리소스
   const i18n = {
@@ -255,14 +335,24 @@ document.addEventListener("DOMContentLoaded", () => {
         squat: t.squat,
         deadlift: t.deadlift,
       };
-      resultExercise.textContent = `${t.resultExercise}: ${
+      resultExercise.textContent = `${
         exerciseNameMap[selectedExercise] || selectedExercise
       }`;
-      resultInputs.textContent = `${t.resultWeight}: ${weight}kg, ${t.resultReps}: ${reps}`;
+      resultInputs.textContent = `${weight}kg, ${t.resultReps}: ${reps}`;
       // 1RM 계산 (Epley 공식)
       if (weight && reps) {
         const oneRM = Math.round(Number(weight) * (1 + reps / 30));
         result1rm.textContent = `${t.result1rm}: ${oneRM}kg`;
+      }
+      // 이미지 동적 변경 (언어 변경 시)
+      const exerciseImageMap = {
+        bench_press: { src: "images/bench.png", alt: t.bench },
+        squat: { src: "images/squat.png", alt: t.squat },
+        deadlift: { src: "images/dead.png", alt: t.deadlift },
+      };
+      if (resultCardImage && exerciseImageMap[selectedExercise]) {
+        resultCardImage.src = exerciseImageMap[selectedExercise].src;
+        resultCardImage.alt = exerciseImageMap[selectedExercise].alt;
       }
     }
   }
@@ -402,6 +492,28 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     selectedExercise = carouselItems[carouselIndex].dataset.exercise;
     clearError();
+    // 결과 카드 이미지/텍스트도 즉시 반영 (결과가 보일 때)
+    if (resultSection.style.display !== "none") {
+      const t = i18n[currentLang];
+      const exerciseNameMap = {
+        bench_press: t.bench,
+        squat: t.squat,
+        deadlift: t.deadlift,
+      };
+      resultExercise.textContent = `${
+        exerciseNameMap[selectedExercise] || selectedExercise
+      }`;
+      // 이미지 동적 변경
+      const exerciseImageMap = {
+        bench_press: { src: "images/bench.png", alt: t.bench },
+        squat: { src: "images/squat.png", alt: t.squat },
+        deadlift: { src: "images/dead.png", alt: t.deadlift },
+      };
+      if (resultCardImage && exerciseImageMap[selectedExercise]) {
+        resultCardImage.src = exerciseImageMap[selectedExercise].src;
+        resultCardImage.alt = exerciseImageMap[selectedExercise].alt;
+      }
+    }
   }
   prevBtn.addEventListener("click", () => {
     carouselIndex =

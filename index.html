@@ -42,6 +42,7 @@
     <link rel="icon" href="images/favicon.png" />
     <link rel="manifest" href="manifest.json" />
     <meta name="theme-color" content="#3b82f6" />
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   </head>
   <body>
     <div class="container">
@@ -165,10 +166,17 @@
           style="display: none"
         >
           <h2 id="result-heading">예상 1RM 결과</h2>
-          <div class="result-content">
-            <div class="result-exercise" aria-live="polite"></div>
-            <div class="result-inputs" aria-live="polite"></div>
-            <div class="result-1rm" aria-live="polite"></div>
+          <div class="result-card">
+            <img
+              class="result-card-image"
+              src="images/bench.png"
+              alt="벤치프레스"
+            />
+            <div class="result-card-content">
+              <div class="result-exercise" aria-live="polite"></div>
+              <div class="result-inputs" aria-live="polite"></div>
+              <div class="result-1rm" aria-live="polite"></div>
+            </div>
             <button
               id="share-btn"
               class="share-btn"
@@ -176,6 +184,14 @@
               aria-label="결과 공유하기"
             >
               공유하기
+            </button>
+            <button
+              id="download-btn"
+              class="download-btn"
+              type="button"
+              aria-label="이미지 저장하기"
+            >
+              이미지 저장
             </button>
             <div
               id="share-message"
