@@ -5,10 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>1RM 계산기</title>
     <link rel="stylesheet" href="styles.css" />
-    <link
-      rel="icon"
-      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💪</text></svg>"
-    />
+    <link rel="icon" href="images/favicon.png" />
   </head>
   <body>
     <div class="container">
@@ -19,24 +16,38 @@
 
       <main>
         <section id="exercise-section">
-          <h2>운동 선택</h2>
-          <div class="exercise-list">
-            <button class="exercise-card" data-exercise="bench_press">
-              <img src="images/bench.png" alt="벤치프레스" />
-              <span>벤치프레스</span>
+          <div class="carousel-container">
+            <button
+              id="carousel-prev"
+              class="carousel-nav"
+              aria-label="이전 운동"
+            >
+              &#60;
             </button>
-            <button class="exercise-card" data-exercise="squat">
-              <img src="images/squat.png" alt="스쿼트" />
-              <span>스쿼트</span>
-            </button>
-            <button class="exercise-card" data-exercise="deadlift">
-              <img src="images/dead.png" alt="데드리프트" />
-              <span>데드리프트</span>
+            <div class="carousel">
+              <div class="carousel-item" data-exercise="bench_press">
+                <img src="images/bench.png" alt="벤치프레스" />
+                <span>벤치프레스</span>
+              </div>
+              <div class="carousel-item" data-exercise="squat">
+                <img src="images/squat.png" alt="스쿼트" />
+                <span>스쿼트</span>
+              </div>
+              <div class="carousel-item" data-exercise="deadlift">
+                <img src="images/dead.png" alt="데드리프트" />
+                <span>데드리프트</span>
+              </div>
+            </div>
+            <button
+              id="carousel-next"
+              class="carousel-nav"
+              aria-label="다음 운동"
+            >
+              &#62;
             </button>
           </div>
         </section>
         <section id="input-section">
-          <h2>무게/횟수 입력</h2>
           <form id="input-form" autocomplete="off">
             <div class="input-group">
               <label for="weight">무게(kg)</label>

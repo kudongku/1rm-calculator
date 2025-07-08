@@ -214,4 +214,41 @@ document.addEventListener("DOMContentLoaded", () => {
   // 진입 시 localStorage/URL 파라미터 우선 적용
   loadInputs();
   loadFromUrl();
+
+  // 3D 캐러셀 로직
+  const carousel = document.querySelector(".carousel");
+  const carouselItems = Array.from(document.querySelectorAll(".carousel-item"));
+  const prevBtn = document.getElementById("carousel-prev");
+  const nextBtn = document.getElementById("carousel-next");
+  let carouselIndex = 0;
+
+  function updateCarousel() {
+    const n = carouselItems.length;
+    carouselItems.forEach((item, i) => {
+      const angle = ((i - carouselIndex + n) % n) * 120; // 3개라 360/3=120도씩
+      item.style.transform = `translate(-50%, -50%) rotateY(${angle}deg) translateZ(180px)`;
+      item.classList.toggle("selected", i === carouselIndex);
+    });
+    // 선택 상태 연동
+    selectedExercise = carouselItems[carouselIndex].dataset.exercise;
+    clearError();
+  }
+  prevBtn.addEventListener("click", () => {
+    carouselIndex =
+      (carouselIndex - 1 + carouselItems.length) % carouselItems.length;
+    updateCarousel();
+  });
+  nextBtn.addEventListener("click", () => {
+    carouselIndex = (carouselIndex + 1) % carouselItems.length;
+    updateCarousel();
+  });
+  // 캐러셀 아이템 클릭 시 선택
+  carouselItems.forEach((item, i) => {
+    item.addEventListener("click", () => {
+      carouselIndex = i;
+      updateCarousel();
+    });
+  });
+  // 초기 상태
+  updateCarousel();
 });
