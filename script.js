@@ -567,4 +567,49 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
+
+  // 3D Tilt 효과 (더 동적으로 개선)
+  if (resultCard) {
+    const maxTilt = 18; // 더 큰 각도
+    const minScale = 1.03;
+    const maxScale = 1.07;
+    let ticking = false;
+    let lastTransform = "";
+    function handleTilt(e) {
+      const rect = resultCard.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const percentX = (x - centerX) / centerX;
+      const percentY = (y - centerY) / centerY;
+      const rotateY = percentX * maxTilt;
+      const rotateX = -percentY * maxTilt;
+      // 마우스가 중앙에서 멀수록 scale 증가
+      const dist = Math.sqrt(percentX * percentX + percentY * percentY);
+      const scale = minScale + (maxScale - minScale) * Math.min(dist, 1);
+      const transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(${scale})`;
+      if (transform !== lastTransform) {
+        resultCard.style.transform = transform;
+        lastTransform = transform;
+      }
+      resultCard.classList.add("tilted");
+      ticking = false;
+    }
+    resultCard.addEventListener("mousemove", (e) => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => handleTilt(e));
+        ticking = true;
+      }
+    });
+    resultCard.addEventListener("mouseleave", () => {
+      resultCard.style.transform = "rotateX(0deg) rotateY(0deg) scale(1)";
+      resultCard.classList.remove("tilted");
+      lastTransform = "";
+    });
+    resultCard.addEventListener("mouseenter", () => {
+      resultCard.style.transition =
+        "transform 0.15s cubic-bezier(.22,1,.36,1), box-shadow 0.15s";
+    });
+  }
 });
