@@ -225,11 +225,14 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateCarousel() {
     const n = carouselItems.length;
     carouselItems.forEach((item, i) => {
-      const angle = ((i - carouselIndex + n) % n) * 120; // 3개라 360/3=120도씩
+      const angle = ((i - carouselIndex + n) % n) * 120;
       item.style.transform = `translate(-50%, -50%) rotateY(${angle}deg) translateZ(180px)`;
       item.classList.toggle("selected", i === carouselIndex);
+      item.setAttribute(
+        "aria-selected",
+        i === carouselIndex ? "true" : "false"
+      );
     });
-    // 선택 상태 연동
     selectedExercise = carouselItems[carouselIndex].dataset.exercise;
     clearError();
   }
@@ -251,4 +254,38 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   // 초기 상태
   updateCarousel();
+
+  // 키보드 접근성: 좌우 버튼, 캐러셀 아이템
+  prevBtn.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+      e.preventDefault();
+      prevBtn.click();
+    }
+  });
+  nextBtn.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+      e.preventDefault();
+      nextBtn.click();
+    }
+  });
+  carouselItems.forEach((item, i) => {
+    item.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+        e.preventDefault();
+        carouselIndex = i;
+        updateCarousel();
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        carouselIndex =
+          (carouselIndex - 1 + carouselItems.length) % carouselItems.length;
+        updateCarousel();
+        carouselItems[carouselIndex].focus();
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        carouselIndex = (carouselIndex + 1) % carouselItems.length;
+        updateCarousel();
+        carouselItems[carouselIndex].focus();
+      }
+    });
+  });
 });

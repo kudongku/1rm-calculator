@@ -52,24 +52,49 @@
 
       <main>
         <section id="exercise-section">
-          <div class="carousel-container">
+          <h2 id="exercise-heading">운동 선택</h2>
+          <div
+            class="carousel-container"
+            role="listbox"
+            aria-labelledby="exercise-heading"
+          >
             <button
               id="carousel-prev"
               class="carousel-nav"
               aria-label="이전 운동"
+              aria-controls="carousel-list"
+              tabindex="0"
             >
               &#60;
             </button>
-            <div class="carousel">
-              <div class="carousel-item" data-exercise="bench_press">
+            <div class="carousel" id="carousel-list">
+              <div
+                class="carousel-item"
+                data-exercise="bench_press"
+                role="option"
+                aria-selected="false"
+                tabindex="0"
+              >
                 <img src="images/bench.png" alt="벤치프레스" />
                 <span>벤치프레스</span>
               </div>
-              <div class="carousel-item" data-exercise="squat">
+              <div
+                class="carousel-item"
+                data-exercise="squat"
+                role="option"
+                aria-selected="false"
+                tabindex="0"
+              >
                 <img src="images/squat.png" alt="스쿼트" />
                 <span>스쿼트</span>
               </div>
-              <div class="carousel-item" data-exercise="deadlift">
+              <div
+                class="carousel-item"
+                data-exercise="deadlift"
+                role="option"
+                aria-selected="false"
+                tabindex="0"
+              >
                 <img src="images/dead.png" alt="데드리프트" />
                 <span>데드리프트</span>
               </div>
@@ -78,6 +103,8 @@
               id="carousel-next"
               class="carousel-nav"
               aria-label="다음 운동"
+              aria-controls="carousel-list"
+              tabindex="0"
             >
               &#62;
             </button>
@@ -87,11 +114,24 @@
           <form id="input-form" autocomplete="off">
             <div class="input-group">
               <label for="weight">무게(kg)</label>
-              <input type="text" id="weight" name="weight" required />
+              <input
+                type="text"
+                id="weight"
+                name="weight"
+                required
+                aria-required="true"
+                aria-label="무게(kg) 입력"
+              />
             </div>
             <div class="input-group">
               <label for="reps">횟수</label>
-              <select id="reps" name="reps" required>
+              <select
+                id="reps"
+                name="reps"
+                required
+                aria-required="true"
+                aria-label="횟수 선택"
+              >
                 <option value="">선택</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -111,6 +151,7 @@
             id="error-message"
             class="error-message"
             aria-live="polite"
+            role="alert"
           ></div>
         </section>
         <section
@@ -118,18 +159,24 @@
           class="result-section"
           style="display: none"
         >
-          <h2>예상 1RM 결과</h2>
+          <h2 id="result-heading">예상 1RM 결과</h2>
           <div class="result-content">
-            <div class="result-exercise"></div>
-            <div class="result-inputs"></div>
-            <div class="result-1rm"></div>
-            <button id="share-btn" class="share-btn" type="button">
+            <div class="result-exercise" aria-live="polite"></div>
+            <div class="result-inputs" aria-live="polite"></div>
+            <div class="result-1rm" aria-live="polite"></div>
+            <button
+              id="share-btn"
+              class="share-btn"
+              type="button"
+              aria-label="결과 공유하기"
+            >
               공유하기
             </button>
             <div
               id="share-message"
               class="share-message"
               aria-live="polite"
+              role="status"
             ></div>
           </div>
         </section>
