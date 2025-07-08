@@ -49,17 +49,33 @@ header {
 }
 
 #theme-toggle {
-  background: none;
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 100;
+  background: transparent;
+  color: var(--accent-color);
   border: none;
-  font-size: 24px;
+  font-size: 32px;
   cursor: pointer;
   padding: 8px;
-  border-radius: 8px;
-  transition: background-color 0.2s;
+  border-radius: 50%;
+  box-shadow: none;
+  transition: color 0.2s;
 }
-
-#theme-toggle:hover {
-  background-color: var(--border-color);
+#theme-toggle:hover,
+#theme-toggle:focus-visible {
+  background: transparent;
+  color: #2563eb;
+  outline: none;
+}
+@media (max-width: 600px) {
+  #theme-toggle {
+    right: 12px;
+    bottom: 12px;
+    font-size: 24px;
+    padding: 6px;
+  }
 }
 
 /* 운동 선택 카드 */
@@ -399,5 +415,23 @@ select:focus-visible {
   }
   .footer-links {
     gap: 8px;
+  }
+}
+
+.lang-select {
+  margin-left: 16px;
+  padding: 6px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 15px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+@media (max-width: 600px) {
+  .lang-select {
+    margin-left: 8px;
+    font-size: 13px;
+    padding: 4px 8px;
   }
 }

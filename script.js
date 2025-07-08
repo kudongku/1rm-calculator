@@ -83,17 +83,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     // 1RM 계산 (Epley 공식)
     const oneRM = Math.round(Number(weight) * (1 + reps / 30));
-    // 운동명 한글 변환
+    // 운동명 다국어 변환
+    const t = i18n[currentLang];
     const exerciseNameMap = {
-      bench_press: "벤치프레스",
-      squat: "스쿼트",
-      deadlift: "데드리프트",
+      bench_press: t.bench,
+      squat: t.squat,
+      deadlift: t.deadlift,
     };
-    resultExercise.textContent = `운동: ${
+    resultExercise.textContent = `${t.resultExercise}: ${
       exerciseNameMap[selectedExercise] || selectedExercise
     }`;
-    resultInputs.textContent = `무게: ${weight}kg, 횟수: ${reps}`;
-    result1rm.textContent = `예상 1RM: ${oneRM}kg`;
+    resultInputs.textContent = `${t.resultWeight}: ${weight}kg, ${t.resultReps}: ${reps}`;
+    result1rm.textContent = `${t.result1rm}: ${oneRM}kg`;
     showResult();
   });
 
@@ -128,7 +129,173 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  function showError(msg) {
+  // 다국어 리소스
+  const i18n = {
+    ko: {
+      title: "1RM 계산기",
+      selectExercise: "운동 선택",
+      weight: "무게(kg)",
+      reps: "횟수",
+      repsSelect: "선택",
+      submit: "입력 완료",
+      result: "예상 1RM 결과",
+      share: "공유하기",
+      errorSelectExercise: "운동을 선택해주세요.",
+      errorWeight: "무게는 양수로 입력해주세요.",
+      errorReps: "횟수는 1~10 중에서 선택해주세요.",
+      bench: "벤치프레스",
+      squat: "스쿼트",
+      deadlift: "데드리프트",
+      github: "깃허브",
+      email: "이메일 문의",
+      feedback: "피드백 남기기",
+      resultExercise: "운동",
+      resultWeight: "무게",
+      resultReps: "횟수",
+      result1rm: "예상 1RM",
+    },
+    en: {
+      title: "1RM Calculator",
+      selectExercise: "Select Exercise",
+      weight: "Weight (kg)",
+      reps: "Reps",
+      repsSelect: "Select",
+      submit: "Submit",
+      result: "Estimated 1RM Result",
+      share: "Share",
+      errorSelectExercise: "Please select an exercise.",
+      errorWeight: "Please enter a positive weight.",
+      errorReps: "Please select reps between 1 and 10.",
+      bench: "Bench Press",
+      squat: "Squat",
+      deadlift: "Deadlift",
+      github: "GitHub",
+      email: "Email",
+      feedback: "Feedback",
+      resultExercise: "Exercise",
+      resultWeight: "Weight",
+      resultReps: "Reps",
+      result1rm: "Estimated 1RM",
+    },
+    ja: {
+      title: "1RM計算機",
+      selectExercise: "種目を選択",
+      weight: "重量(kg)",
+      reps: "回数",
+      repsSelect: "選択",
+      submit: "入力完了",
+      result: "予想1RM結果",
+      share: "共有",
+      errorSelectExercise: "種目を選択してください。",
+      errorWeight: "重量は正の数で入力してください。",
+      errorReps: "回数は1～10の間で選択してください。",
+      bench: "ベンチプレス",
+      squat: "スクワット",
+      deadlift: "デッドリフト",
+      github: "ギットハブ",
+      email: "メール",
+      feedback: "フィードバック",
+      resultExercise: "種目",
+      resultWeight: "重量",
+      resultReps: "回数",
+      result1rm: "予想1RM",
+    },
+  };
+  let currentLang = localStorage.getItem("lang") || "ko";
+  const langSelect = document.getElementById("lang-select");
+
+  function setLang(lang) {
+    currentLang = lang;
+    localStorage.setItem("lang", lang);
+    const t = i18n[lang];
+    // 헤더/타이틀
+    document.title = t.title + " - 최대 중량 쉽게 계산";
+    document.querySelector("h1").textContent = t.title;
+    // 운동 선택
+    document.getElementById("exercise-heading").textContent = t.selectExercise;
+    // 캐러셀 아이템
+    const items = document.querySelectorAll(".carousel-item");
+    const names = [t.bench, t.squat, t.deadlift];
+    items.forEach((item, i) => {
+      item.querySelector("span").textContent = names[i];
+      item.querySelector("img").alt = names[i];
+    });
+    // 입력폼
+    document.querySelector('label[for="weight"]').textContent = t.weight;
+    document.querySelector('label[for="reps"]').textContent = t.reps;
+    document
+      .getElementById("weight")
+      .setAttribute("aria-label", t.weight + " 입력");
+    document
+      .getElementById("reps")
+      .setAttribute("aria-label", t.reps + " 선택");
+    // 드롭다운 옵션
+    const repsSelect = document.getElementById("reps");
+    repsSelect.options[0].textContent = t.repsSelect;
+    // 버튼
+    document.querySelector('#input-form button[type="submit"]').textContent =
+      t.submit;
+    // 결과
+    document.getElementById("result-heading").textContent = t.result;
+    document.getElementById("share-btn").textContent = t.share;
+    document.getElementById("share-btn").setAttribute("aria-label", t.share);
+    // 푸터
+    const footerLinks = document.querySelectorAll(".footer-links a");
+    if (footerLinks.length === 3) {
+      footerLinks[0].textContent = t.github;
+      footerLinks[1].textContent = t.email;
+      footerLinks[2].textContent = t.feedback;
+    }
+    // 언어 변경 시 결과 영역도 즉시 번역 반영
+    if (resultSection.style.display !== "none") {
+      const weight = weightInput.value.trim();
+      const reps = Number(repsInput.value);
+      const exerciseNameMap = {
+        bench_press: t.bench,
+        squat: t.squat,
+        deadlift: t.deadlift,
+      };
+      resultExercise.textContent = `${t.resultExercise}: ${
+        exerciseNameMap[selectedExercise] || selectedExercise
+      }`;
+      resultInputs.textContent = `${t.resultWeight}: ${weight}kg, ${t.resultReps}: ${reps}`;
+      // 1RM 계산 (Epley 공식)
+      if (weight && reps) {
+        const oneRM = Math.round(Number(weight) * (1 + reps / 30));
+        result1rm.textContent = `${t.result1rm}: ${oneRM}kg`;
+      }
+    }
+  }
+  // 언어 선택 이벤트
+  langSelect.value = currentLang;
+  langSelect.addEventListener("change", (e) => {
+    setLang(e.target.value);
+  });
+  // 최초 적용
+  setLang(currentLang);
+
+  // 기존 에러 메시지 다국어화
+  function showError(msgKey) {
+    const t = i18n[currentLang];
+    let msg = msgKey;
+    if (
+      msgKey === "운동을 선택해주세요." ||
+      msgKey === "Please select an exercise." ||
+      msgKey === "種目を選択してください。"
+    )
+      msg = t.errorSelectExercise;
+    if (
+      msgKey === "무게는 양수로 입력해주세요." ||
+      msgKey === "Please enter a positive weight." ||
+      msgKey === "重量は正の数で入力してください。"
+    )
+      msg = t.errorWeight;
+    if (
+      msgKey === "횟수는 1~10 중에서 선택해주세요." ||
+      msgKey === "Please select reps between 1 and 10." ||
+      msgKey === "回数は1～10の間で選択してください。"
+    )
+      msg = t.errorReps;
     errorMessage.textContent = msg;
   }
   function clearError() {
