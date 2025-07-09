@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>1RM 계산기 - 최대 중량 쉽게 계산</title>
     <meta
       name="description"
@@ -13,6 +14,7 @@
       content="1RM, 1rm 계산기, 3대, 3대측정, 벤치프레스, 스쿼트, 데드리프트, 운동, 피트니스, 웨이트트레이닝, 헬스, 중량 계산, 운동 기록"
     />
     <meta name="author" content="kudongku@github.com" />
+
     <meta property="og:type" content="website" />
     <meta property="og:title" content="1RM 계산기 - 최대 중량 쉽게 계산" />
     <meta
@@ -25,6 +27,7 @@
       content="https://my1rm.online/images/muscular.png"
     />
     <meta property="og:locale" content="ko_KR" />
+
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="1RM 계산기 - 최대 중량 쉽게 계산" />
     <meta
@@ -35,17 +38,23 @@
       name="twitter:image"
       content="https://my1rm.online/images/muscular.png"
     />
+
     <link rel="stylesheet" href="styles.css" />
-    <link rel="icon" href="images/favicon.png" />
+    <link rel="icon" href="images/face.png" />
     <link rel="manifest" href="manifest.json" />
     <meta name="theme-color" content="#3b82f6" />
+
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   </head>
   <body>
     <div class="container">
       <header>
-        <h1>1RM 계산기</h1>
+        <div style="display: flex; align-items: center; gap: 0.5em">
+          <img src="images/face.png" alt="face" style="height: 3em" />
+          <h1>1RM 계산기</h1>
+        </div>
+
         <button id="theme-toggle" aria-label="다크모드 토글">🌙</button>
         <select id="lang-select" class="lang-select" aria-label="언어 선택">
           <option value="ko">한국어</option>
@@ -118,7 +127,7 @@
             <div class="input-group">
               <label for="weight">무게(kg)</label>
               <input
-                type="text"
+                type="number"
                 id="weight"
                 name="weight"
                 required

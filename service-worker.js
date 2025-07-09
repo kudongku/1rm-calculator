@@ -7,7 +7,7 @@ const urlsToCache = [
   "/1rm-calculator/images/bench.png",
   "/1rm-calculator/images/squat.png",
   "/1rm-calculator/images/dead.png",
-  "/1rm-calculator/images/favicon.png",
+  "/1rm-calculator/images/face.png",
 ];
 
 self.addEventListener("install", (event) => {
