@@ -14,8 +14,14 @@
 
 ## 기술 스택
 
-- HTML, CSS(Tailwind 유사 커스텀), JavaScript(ES6)
-- 반응형 웹, 접근성, 다크모드 지원
+- **HTML5**
+- **CSS3 (커스텀 유틸리티, 다크모드, 반응형)**
+- **Vanilla JavaScript (ES6+)**
+- **PWA (서비스 워커, manifest.json)**
+- **외부 라이브러리**
+  - html2canvas (결과 이미지 캡처)
+  - canvas-confetti (축하 이펙트)
+- **다국어 지원** (한국어/영어/일본어)
 
 ## 참고
 
